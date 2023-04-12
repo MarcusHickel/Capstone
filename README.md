@@ -8,6 +8,7 @@ cd ~/dev_ws
 colcon build --symlink-install 
 ```
 (--symlink-install uses symlink instead of copies so rebuilding isnt nesscary when tweaking files)
+
 2. Launch the listener or talker launcher with <- To replace with robot state publisher>
 ```
 ros2 launch trackingplatform talker.launch.py
