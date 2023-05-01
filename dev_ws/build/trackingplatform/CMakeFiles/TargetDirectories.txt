@@ -1,9 +1,0 @@
-/home/marcus/rockettrackingplatform/dev_ws/build/trackingplatform/CMakeFiles/install/strip.dir
-/home/marcus/rockettrackingplatform/dev_ws/build/trackingplatform/CMakeFiles/install/local.dir
-/home/marcus/rockettrackingplatform/dev_ws/build/trackingplatform/CMakeFiles/install.dir
-/home/marcus/rockettrackingplatform/dev_ws/build/trackingplatform/CMakeFiles/list_install_components.dir
-/home/marcus/rockettrackingplatform/dev_ws/build/trackingplatform/CMakeFiles/rebuild_cache.dir
-/home/marcus/rockettrackingplatform/dev_ws/build/trackingplatform/CMakeFiles/edit_cache.dir
-/home/marcus/rockettrackingplatform/dev_ws/build/trackingplatform/CMakeFiles/test.dir
-/home/marcus/rockettrackingplatform/dev_ws/build/trackingplatform/CMakeFiles/trackingplatform_uninstall.dir
-/home/marcus/rockettrackingplatform/dev_ws/build/trackingplatform/CMakeFiles/uninstall.dir
