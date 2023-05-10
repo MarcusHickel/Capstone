@@ -5,20 +5,18 @@
     <!-- As we move through the file, new things to note will be pointed out. -->
     <!-- It's not meant an example of GOOD design, but an example of some of the various features of URDF/xacro. -->
 
-
-
     <!-- This will include all the contents of example_include.xacro first. Go check it out! -->
     <xacro:include filename="include.xacro" />
 
+    <xacro:include filename="ros2_control.xacro" />
 
 
     <!-- This first link called "world" is empty -->
     <link name="world"></link>
 
-
     <!-- A simple fixed joint from our empty world link, to our base. -->
     <!-- The base origin is offset from the world origin. -->
-        <joint name="base_joint" type="fixed">
+    <joint name="base_joint" type="fixed">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <parent link="world"/>
         <child link="base_link"/>        
