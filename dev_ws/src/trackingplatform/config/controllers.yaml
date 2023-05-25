@@ -4,8 +4,11 @@ controller_manager:
     update_rate: 30 # Hz
     use_sim_time: true
 
-    # forward_position_controller:
-    #   type: forward_command_controller/ForwardCommandController
+    forward_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    # joint_trajectory_controller:
+    #   type: joint_trajectory_controller/JointTrajectoryController
 
     # fts_broadcaster:
     #   type: force_torque_sensor_broadcaster/ForceTorqueSensorBroadcaster
@@ -14,11 +17,18 @@ controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster
 
 forward_position_controller:
+# joint_trajectory_controller:
   ros__parameters:
     joints:
       - azimuth_joint
       - camera_joint
     interface_name: position
+    # command_interfaces:
+    #   - position
+    # state_interfaces:
+    #   - position
+    #   - velocity
+
 
 # fts_broadcaster:
 #   ros__parameters:

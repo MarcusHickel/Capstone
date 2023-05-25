@@ -59,6 +59,8 @@ def generate_launch_description():
         arguments=["forward_position_controller", "--controller-manager", "/controller_manager"],
     )
 
+        # forward_position_controller
+        # joint_trajectory_controller
 
 
     # Delay start of robot_controller after `joint_state_broadcaster`

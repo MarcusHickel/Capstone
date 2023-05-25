@@ -18,7 +18,7 @@ source install/setup.bash
 ```
 ros2 launch trackingplatform talker.launch.py
 ```
-
+Manually running robot state publisher, not needed once launch file is working correctly
 ```
 ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro path/to/my/xacro/file.urdf.xacro)"
 ```
@@ -27,8 +27,17 @@ syntax for launch files:
 ```
 ros2 launch [packagename] [launcherfile]
 ```
+Available launch files
+```
+ctrl.launch.py -- Controller launcher, Launches the Camera platform and Gazebo with the forward_position_controler
+listener.launch.py  -- Launches the listener script, used with talker.launch.py to debug
+rs.launch.py -- Rocket, Spawns the rocket
+rsp.launch.py -- Robot state publisher
+sim.launch.py -- Launches the camera platform in Simulation (Gazebo) 
+talker.launch.py -- Talker script used with listern script for debugging
+```
 
-3. Launch the `joint_state_publisher_gui` with 
+3. Launch the `joint_state_publisher_gui` with
 ```
 ros2 run joint_state_publisher_gui joint_state_publisher_gui
 ```
@@ -36,6 +45,13 @@ ros2 run joint_state_publisher_gui joint_state_publisher_gui
 4. Launch Rvis
 ```
 rviz2
+```
+
+5. Control the Camera platform
+```
+ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiArray "data:
+- 1
+- 1"
 ```
 
 - Set fixed frame to 'world'
@@ -47,13 +63,16 @@ Control Rocket
     Teleop?
     https://control.ros.org/master/doc/ros2_controllers/doc/controllers_index.html#available-controllers
     https://control.ros.org/master/doc/ros2_control_demos/example_4/doc/userdoc.html
-    https://control.ros.org/master/doc/ros2_control_demos/example_1/doc/userdoc.html <- 
+    https://control.ros.org/master/doc/ros2_control_demos/example_1/doc/userdoc.html 
+
+
 
     http://wiki.ros.org/robot_mechanism_controllers/JointPositionController
     https://www.rosroboticslearning.com/ros-control
 
 
         Current issue: 
+        None
 
         Controller mananger wasnt spawning 
         running ctrl.launch.py 
