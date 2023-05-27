@@ -5,8 +5,8 @@ import cv2
 import numpy as np
 
 # Read image
-im = cv2.imread("/home/marcus/rockettrackingplatform/Example_Rocket/image.png")
-# im = cv2.imread("/home/marcus/rockettrackingplatform/Example_Rocket/blob.jpg")
+im = cv2.imread("/home/marcus/rockettrackingplatform/Blobdetect/image.png")
+# im = cv2.imread("/home/marcus/rockettrackingplatform/Blobdetect/blob.jpg")
 
 hue_min = np.array([5, 50, 50],np.uint8)
 hue_max = np.array([15, 255, 255],np.uint8)
