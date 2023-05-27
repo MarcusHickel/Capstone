@@ -42,6 +42,7 @@ def generate_launch_description():
     # Run the spawner node from the gazebo_ros package.
     spawn_entity = Node(
                         package='gazebo_ros', 
+                        # namespace='cameraplatform',
                         executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
                                 '-entity', 'my_bot'],

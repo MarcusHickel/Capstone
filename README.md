@@ -37,6 +37,9 @@ sim.launch.py -- Launches the camera platform in Simulation (Gazebo)
 talker.launch.py -- Talker script used with listern script for debugging
 ```
 
+Launch ctrl first then rs
+note: if two camera platforms spawn, delete the second and relaunch rs.launch.py
+
 3. Launch the `joint_state_publisher_gui` with
 ```
 ros2 run joint_state_publisher_gui joint_state_publisher_gui
@@ -58,6 +61,14 @@ ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiAr
 - Add a 'RobotModel' display, with the topic set to '/robot_description', and alpha set to 0.8
 - Add a 'TF' display with names enabled.
 
+ros2 topic list
+ros2 control list_hardware_interfaces
+
+rqt
+rqt_graph
+
+
+
 ToDo
 Control Rocket
     Teleop?
@@ -71,8 +82,16 @@ Control Rocket
     https://www.rosroboticslearning.com/ros-control
 
 
+    https://www.youtube.com/watch?v=ZfVODpwVbS4
+
+
+    gazebo_msgs/EntityState
+
         Current issue: 
-        None
+        
+        Spawning Rocket and Camera in the same sim breaks the control, possibly due to sharing variable names?
+        robot_description is shared
+        Fixed: Rocket and camera platfrom are "one" just branching of different links
 
         Controller mananger wasnt spawning 
         running ctrl.launch.py 
@@ -93,9 +112,20 @@ Control Rocket
     Test nodes
 
 Control Platform
-Impletment blob find
+Impletment blob find: DONE! run
+```
+ros2 run cv listener
+```
+https://www.youtube.com/watch?v=We6CQHhhOFo
+https://answers.ros.org/question/361030/ros2-image-subscriber/
 Changing FOV on camera
+
+Data?
+https://www.reddit.com/r/ROS/comments/uvw8ij/multiple_robots_gazebo_ros2/
 
 Issues:
 Running joint state publisher gui breaks rviz ability to see camera and doesnt control gazebo
 TF_OLD_DATA
+
+Gazebo 11.11.0
+ROS2 FOxy

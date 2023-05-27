@@ -37,12 +37,12 @@
                 <color rgba="0.2 1 0.2 1"/>
             </material>
         </visual>
-        <collision>
+        <!-- <collision>
             <origin xyz="0 0 0.05" rpy="0 0 0"/>
             <geometry>
                 <box size="1 1 0.1" />
             </geometry>
-        </collision>
+        </collision> -->
         <inertial>
             <origin xyz="0 0 0.05" rpy="0 0 0"/>
             <mass value="12" />
@@ -59,7 +59,7 @@
         <limit lower="0" upper="${2*pi}" velocity="100" effort="100"/>       
     </joint>
 
-        <link name="azimuth_link">
+    <link name="azimuth_link">
         <visual>
             <origin xyz="0 0 .2" rpy="0 0 0"/>
             <geometry>
@@ -69,12 +69,12 @@
                 <color rgba="0.2 0.2 1 1"/>
             </material>
         </visual>
-        <collision>
+        <!-- <collision>
             <origin xyz="0 0 0.05" rpy="0 0 0"/>
             <geometry>
                 <box size="1 1 0.1" />
             </geometry>
-        </collision>
+        </collision> -->
         <inertial>
             <origin xyz="0 0 0.05" rpy="0 0 0"/>
             <mass value="12" />
@@ -127,6 +127,9 @@
 
 
    <xacro:include filename="gazebo.xacro" />
+
+<!-- Adding the Rocket -->
+   <xacro:include filename="rocket.urdf.xacro"/> 
 
 
 </robot>
