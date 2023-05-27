@@ -14,14 +14,16 @@ Source the workspace in dev_ws
 source install/setup.bash
 ```
 
-2. Launch the listener or talker launcher to test, next the robot state publisher
+2. Launch the following in seperate terminals
 ```
-ros2 launch trackingplatform talker.launch.py
+ros2 launch trackingplatform ctrl.launch.py
+
+ros2 run cv rocket_detect
+
+ros2 run cv cam_ctrl
 ```
-Manually running robot state publisher, not needed once launch file is working correctly
-```
-ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro path/to/my/xacro/file.urdf.xacro)"
-```
+
+
 
 syntax for launch files:
 ```
@@ -37,95 +39,46 @@ sim.launch.py -- Launches the camera platform in Simulation (Gazebo)
 talker.launch.py -- Talker script used with listern script for debugging
 ```
 
+# Notes
+
 Launch ctrl first then rs
 note: if two camera platforms spawn, delete the second and relaunch rs.launch.py
 
-3. Launch the `joint_state_publisher_gui` with
+Launch the `joint_state_publisher_gui` with (Doesnt work, the camera is controled on a different topic)
 ```
 ros2 run joint_state_publisher_gui joint_state_publisher_gui
 ```
 
-4. Launch Rvis
+Launch Rvis
 ```
 rviz2
 ```
 
-5. Control the Camera platform
+Manually Control the Camera platform
 ```
 ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiArray "data:
-- 1
-- 1"
+- Altitude(FLOAT)
+- Azimuth(FLOAT)"
+```
+Manually running robot state publisher, not needed once launch file is working correctly
+```
+ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro path/to/my/xacro/file.urdf.xacro)"
 ```
 
-- Set fixed frame to 'world'
-- Add a 'RobotModel' display, with the topic set to '/robot_description', and alpha set to 0.8
-- Add a 'TF' display with names enabled.
 
-ros2 topic list
+ros2 topic list -t
 ros2 control list_hardware_interfaces
 
 rqt
 rqt_graph
 
 
-
-ToDo
-Control Rocket
-    Teleop?
-    https://control.ros.org/master/doc/ros2_controllers/doc/controllers_index.html#available-controllers
-    https://control.ros.org/master/doc/ros2_control_demos/example_4/doc/userdoc.html
-    https://control.ros.org/master/doc/ros2_control_demos/example_1/doc/userdoc.html 
-
-
-
-    http://wiki.ros.org/robot_mechanism_controllers/JointPositionController
-    https://www.rosroboticslearning.com/ros-control
-
-
-    https://www.youtube.com/watch?v=ZfVODpwVbS4
-
-
-    gazebo_msgs/EntityState
-
-        Current issue: 
-        
-        Spawning Rocket and Camera in the same sim breaks the control, possibly due to sharing variable names?
-        robot_description is shared
-        Fixed: Rocket and camera platfrom are "one" just branching of different links
-
-        Controller mananger wasnt spawning 
-        running ctrl.launch.py 
-        [gzserver-1] [WARN] [1683695189.182994074] [gazebo_ros2_control]: There is no joint or sensor available
-        [gzserver-1] [FATAL] [1683695189.183028701] [gazebo_ros2_control]: Could not initialize robot simulation interface
-        Fixed? Not sure what is issue was, just started working
-
-
-        controller.yaml is failing. 
-        Fixed: config folder added to cmake 
-
-    Launch File
-    Controllers yaml
-    URDF file
-        Description
-        ros2_control tag
-    RViz config
-    Test nodes
-
-Control Platform
-Impletment blob find: DONE! run
 ```
-ros2 run cv listener
-```
-https://www.youtube.com/watch?v=We6CQHhhOFo
-https://answers.ros.org/question/361030/ros2-image-subscriber/
-Changing FOV on camera
-
-Data?
-https://www.reddit.com/r/ROS/comments/uvw8ij/multiple_robots_gazebo_ros2/
-
-Issues:
-Running joint state publisher gui breaks rviz ability to see camera and doesnt control gazebo
-TF_OLD_DATA
+Distributor ID:	Ubuntu
+Description:	Ubuntu 20.04.6 LTS
+Release:	20.04
+Codename:	focal
 
 Gazebo 11.11.0
 ROS2 FOxy
+```
