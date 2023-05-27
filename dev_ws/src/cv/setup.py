@@ -20,10 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        'img_publisher = cv_basics.webcam_pub:main',
-        'img_subscriber = cv_basics.webcam_sub:main',
-        'talker = cv.publisher_member_function:main',
-        'listener = cv.subscriber_member_function:main',
+        'cam_ctrl = cv.cam_ctrl:main',
+        'rocket_detect = cv.rocket_detect:main',
         ],
     },
 )

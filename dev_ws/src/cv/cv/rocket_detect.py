@@ -2,16 +2,17 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image # Image is the message type
 from cv_bridge import CvBridge # Package to convert between ROS and OpenCV Images
+from geometry_msgs.msg      import Point
 import cv2 # OpenCV library
 import numpy as np
 
 from std_msgs.msg import String
 
 
-class MinimalSubscriber(Node):
+class MinimalSubscriber(Node): #Change name of this class
 
     def __init__(self):
-        super().__init__('minimal_subscriber')
+        super().__init__('rocket_detect')
         self.subscription = self.create_subscription(
             Image,
             'my_camera/image_raw',
@@ -19,12 +20,15 @@ class MinimalSubscriber(Node):
             10)
         self.subscription  # prevent unused variable warning
 
+        #Creating a publisher to output data
+        self.pub = self.create_publisher(Point, '/detection_pos', 1)
+
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()
 
     def listener_callback(self, data):
         # self.get_logger().info('I hear %s"' % msg.data)
-        self.get_logger().info('Receiving video frame')
+        # self.get_logger().info('Receiving video frame')
     
         # Convert ROS Image message to OpenCV image
         current_frame = self.br.imgmsg_to_cv2(data)
@@ -74,7 +78,26 @@ class MinimalSubscriber(Node):
         im_with_keypoints = cv2.drawKeypoints(current_frame, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
         # Show blobs
-        cv2.imshow("Keypoints", im_with_keypoints)
+        cv2.imshow("Detection", im_with_keypoints)
+        
+        point_out = Point()
+
+        for i, kp in enumerate(keypoints):
+            if i == 0:
+                    x = kp.pt[0]
+                    y = kp.pt[1]
+                    s = kp.size
+            
+            if (s > point_out.z):                    
+                                point_out.x = x
+                                point_out.y = y
+                                point_out.z = s
+
+        if (point_out.z > 0):
+            self.pub.publish(point_out) 
+
+        try:self.get_logger().info(f"Pt {i}: ({x},{y},{s})")
+        except:self.get_logger().info('failed')
         cv2.waitKey(1)
 
 
@@ -82,14 +105,14 @@ class MinimalSubscriber(Node):
 def main(args=None):
         rclpy.init(args=args)
 
-        minimal_subscriber = MinimalSubscriber()
+        rocket_detect = MinimalSubscriber()
 
-        rclpy.spin(minimal_subscriber)
+        rclpy.spin(rocket_detect)
 
         # Destroy the node explicitly
         # (optional - otherwise it will be done automatically
         # when the garbage collector destroys the node object)
-        minimal_subscriber.destroy_node()
+        rocket_detect.destroy_node()
         rclpy.shutdown()
 
 

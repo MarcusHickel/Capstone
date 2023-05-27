@@ -96,7 +96,7 @@
             try swapping "depth" to "camera"-->
     <gazebo reference="camera_link">
         <sensor type="depth" name="my_camera">
-            <update_rate>20</update_rate>
+            <update_rate>60</update_rate>
             <visualize>true</visualize>
             <camera name="cam">
                 <horizontal_fov>0.2</horizontal_fov>

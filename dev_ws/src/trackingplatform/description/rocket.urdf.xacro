@@ -65,7 +65,7 @@
     </link> -->
 
     <joint name="x" type="fixed">
-        <origin xyz="15 0 0" rpy="0 0 0"/>
+        <origin xyz="15 5 0" rpy="0 0 0"/>
         <parent link="world"/>
         <child link="x_link"/>
         <axis xyz="1 0 0"/>
@@ -86,18 +86,18 @@
         <limit lower="0" upper="100" velocity="100" effort="100"/> 
     </joint> -->
 
-    <joint name="rocket_joint" type="fixed">
-        <origin xyz="0 0 1" rpy="0 ${pi/2} 0"/>
+    <joint name="rocket_joint" type="continuous">
+        <origin xyz="0 0 1" rpy="0 ${2*pi} 0"/>
         <parent link="x_link"/>
         <child link="rocket_link"/>
-        <axis xyz="0 0 1"/>
+        <axis xyz="1 0 0"/>
         <limit lower="0" upper="100" velocity="100" effort="100"/> 
     </joint>
 
     <link name="rocket_link">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
-            <mass value="0.120" />
+            <mass value="100.120" />
             <inertia ixx="7.58333333333e-06" ixy="0.0" ixz="0.0" iyy="7.58333333333e-06" iyz="0.0" izz="1.25e-05"/> <!-- This is actually wrong for this rocket -->
         </inertial>
                 <collision>
@@ -107,7 +107,7 @@
                     </geometry>
                 </collision>
                 <visual>
-                    <origin rpy="1.5708 0 0" xyz="0 0 0"/>
+                    <origin rpy="1.5708 0 0" xyz="0 0 0.5"/>
                     <geometry>
                         <mesh filename="$(find trackingplatform)/models/Example.stl" scale="0.001 0.001 0.001"/>
                         <!-- <box size="1 1 1"/> -->
