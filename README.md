@@ -16,13 +16,13 @@ source install/setup.bash
 
 2. Launch the following in seperate terminals
 ```
-ros2 launch trackingplatform ctrl.launch.py
+ros2 launch trackingplatform test.launch.py
 
 ros2 run cv rocket_detect
 
 ros2 run cv cam_ctrl
 ```
-
+### note that the gazebo client has trouble showing the rocket, but it appears fine in the camera topic.
 
 
 syntax for launch files:

@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+   <world name="default">
+      <include>
+         <uri>model://ground_plane</uri>
+      </include>
+      <include>
+         <uri>model://sun</uri>
+      </include>
+      <actor name="animated_rocket">
+        <link name="box_link">
+          <visual name="visual">
+            <pose>0 0 0 1.5708 -0 0</pose>
+            <geometry>
+               <mesh>
+                  <uri>/home/marcus/rockettrackingplatform/dev_ws/install/trackingplatform/share/trackingplatform/models/Example.stl</uri>
+                  <scale>0.001 0.001 0.001</scale>
+               </mesh>
+            </geometry>
+            <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+          </visual>
+        </link>
+        <script>
+          <loop>true</loop>
+          <auto_start>true</auto_start>
+          <trajectory id="0" type="square">
+             <waypoint>
+                <time>0.0</time>
+                <pose>10 0 1 0 0 0</pose>
+             </waypoint>
+             <waypoint>
+                <time>10.0</time>
+                <pose>10 0 5 0 0 0</pose>
+             </waypoint>
+             <waypoint>
+                <time>20.0</time>
+                <pose>10 0 1 0 0 0</pose>
+             </waypoint>
+             <waypoint>
+                <time>30.0</time>
+                <pose>9 0 10 0 0 0</pose>
+             </waypoint>
+             <waypoint>
+                <time>40.0</time>
+                <pose>10 0 1 0 0 0</pose>
+             </waypoint>
+          </trajectory>
+        </script>
+      </actor>
+   </world>
+</sdf>

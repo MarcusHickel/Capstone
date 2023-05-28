@@ -129,7 +129,7 @@
    <xacro:include filename="gazebo.xacro" />
 
 <!-- Adding the Rocket -->
-   <xacro:include filename="rocket.urdf.xacro"/> 
+   <!-- <xacro:include filename="rocket.urdf.xacro"/>  -->
 
 
 </robot>

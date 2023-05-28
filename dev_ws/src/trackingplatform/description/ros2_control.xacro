@@ -7,7 +7,7 @@
         </hardware>
 
         <joint name="azimuth_joint">
-            <command_interface name="position"> <!--chage to position?-->
+            <command_interface name="position">
                 <param name="min">-1</param>
                 <param name="max">1</param>
             </command_interface>

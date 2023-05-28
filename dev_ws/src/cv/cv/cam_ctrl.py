@@ -37,9 +37,12 @@ class MinimalPublisher(Node):
         self.Az = 0
         self.Al = 0
 
+        self.AzAdj = 0.001 #Azimuth adjustment value (z axis) left right
+        self.AlAdj = 0.001 #Altitude adjustment value (y axis) up down
+
         #Define boundry 
-        self.xlimit = float(20.0)
-        self.ylimit = float(20.0)
+        self.xlimit = float(5.0)
+        self.ylimit = float(5.0)
         
         #Timer for search
         self.lastRX = time.time() 
@@ -56,12 +59,12 @@ class MinimalPublisher(Node):
         if self.lastRX + 1 < time.time():
             self.get_logger().info('Last Received %ss ago searching...' %(time.time()-self.lastRX))
             
-            self.Az = self.Az + 0.001
+            # self.Az = self.Az + 0.001
 
-            msg = Float64MultiArray()
-            msg.data = [float(self.Az), float(self.Al)] # Z(Azimuth) Y(Altitude)
-            self.publisher.publish(msg)
-            self.get_logger().info('Publishing: "%s"' % msg.data)
+            # msg = Float64MultiArray()
+            # msg.data = [float(self.Az), float(self.Al)] # Z(Azimuth) Y(Altitude)
+            # self.publisher.publish(msg)
+            # self.get_logger().info('Publishing: "%s"' % msg.data)
 
 
     
@@ -75,10 +78,10 @@ class MinimalPublisher(Node):
 
         #Is it +x or -x boundry
         if self.x > self.xlimit:
-            self.Az = self.Az - 0.001
+            self.Az = self.Az - self.AzAdj
             self.get_logger().info('x outside+"%s"' % self.x)
         elif self.x < -self.xlimit:
-            self.Az = self.Az + 0.001
+            self.Az = self.Az + self.AzAdj
             self.get_logger().info('x outside-"%s"' % self.x)
         else:
             self.get_logger().info('x inside"%s"' % self.x)
@@ -87,10 +90,10 @@ class MinimalPublisher(Node):
 
         #Is it +y/-y boundry
         if self.y > self.ylimit:
-            self.Al = self.Al - 0.001
+            self.Al = self.Al - self.AlAdj
             self.get_logger().info('y outside+"%s"' % self.y)
         elif self.y < -self.ylimit:
-            self.Al = self.Al + 0.001
+            self.Al = self.Al + self.AlAdj
             self.get_logger().info('y outside-"%s"' % self.y)
         else:
             self.get_logger().info('y inside"%s"' % self.y)
