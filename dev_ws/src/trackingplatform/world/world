@@ -35,18 +35,22 @@
              </waypoint>
              <waypoint>
                 <time>10.0</time>
-                <pose>10 0 5 0 0 0</pose>
-             </waypoint>
-             <waypoint>
-                <time>20.0</time>
                 <pose>10 0 1 0 0 0</pose>
              </waypoint>
              <waypoint>
                 <time>30.0</time>
-                <pose>9 0 10 0 0 0</pose>
+                <pose>0 -10 5 0 0 0</pose>
              </waypoint>
              <waypoint>
                 <time>40.0</time>
+                <pose>-10 0 1 0 0 0</pose>
+             </waypoint>
+             <waypoint>
+                <time>50.0</time>
+                <pose>0 10 10 0 0 0</pose>
+             </waypoint>
+             <waypoint>
+                <time>60.0</time>
                 <pose>10 0 1 0 0 0</pose>
              </waypoint>
           </trajectory>

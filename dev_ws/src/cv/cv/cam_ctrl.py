@@ -37,8 +37,8 @@ class MinimalPublisher(Node):
         self.Az = 0
         self.Al = 0
 
-        self.AzAdj = 0.1 #Azimuth adjustment value (z axis) left right
-        self.AlAdj = 0.1 #Altitude adjustment value (y axis) up down
+        self.AzAdj = 1 #Azimuth adjustment value (z axis) left right
+        self.AlAdj = 1 #Altitude adjustment value (y axis) up down
 
         self.Altemp = 0
         self.Aztemp = 0
@@ -65,7 +65,7 @@ class MinimalPublisher(Node):
             # self.Az = self.Az + 0.001
 
             msg = Float64MultiArray()
-            msg.data = [float(0.0), float(0.0)] # Z(Azimuth) Y(Altitude)
+            msg.data = [float(-1.0), float(-1.0)] # Z(Azimuth) Y(Altitude)
             self.publisher.publish(msg)
             self.get_logger().info('Publishing: "%s"' % msg.data)
         elif self.lastRX + 1 < time.time():
@@ -83,15 +83,14 @@ class MinimalPublisher(Node):
         self.y = msg.y - 240.0 #Y pos
 
         self.Altemp = self.AlAdj*(self.y**2)*0.000017361 # Scale factor which is was found by getting finding where a parabola =1 at the edge of screen (480px)
-        self.Aztemp = self.AzAdj*(self.x**2)*0.000009766
+        self.Aztemp = self.AzAdj*(self.x**2)*0.000009766 # Scale factor which is was found by getting finding where a parabola =1 at the edge of screen (640px)
 
         #Is it +x or -x boundry 
         if self.x > self.xlimit:
-             # Scale factor which is was found by getting finding where a parabola =1 at the edge of screen (640px)
-            self.Az = self.Az - self.Aztemp
+            self.Az = -self.Aztemp
             self.get_logger().info('x outside+"%s"' % self.x)
         elif self.x < -self.xlimit:
-            self.Az = self.Az + self.AzAdj
+            self.Az = +self.AzAdj
             self.get_logger().info('x outside-"%s"' % self.x)
         else:
             self.get_logger().info('x inside"%s"' % self.x)
@@ -100,17 +99,13 @@ class MinimalPublisher(Node):
 
         #Is it +y/-y boundry
         if self.y > self.ylimit:
-            self.Al = self.Al - self.Altemp
+            self.Al = -self.Altemp
             self.get_logger().info('y outside+"%s"' % self.y)
         elif self.y < -self.ylimit:
-            self.Al = self.Al + self.Altemp
+            self.Al =  +self.Altemp
             self.get_logger().info('y outside-"%s"' % self.y)
         else:
             self.get_logger().info('y inside"%s"' % self.y)
-
-        if self.Al < 0: # To prevent camera going beyond limit
-            self.get_logger().info('position request out of range!')
-            self.Al = 0
 
         # if self.Az < 0:
         #     self.Az = 0

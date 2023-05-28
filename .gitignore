@@ -6,3 +6,7 @@ dev_ws/install/
 dev_ws/log/
 
 dev_ws/src/articubot_one/
+
+dev_ws/src/ball_tracker-main/
+
+dev_ws/src/cv/cv/__pycache__/

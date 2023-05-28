@@ -22,7 +22,7 @@ forward_position_controller:
     joints:
       - azimuth_joint
       - camera_joint
-    interface_name: position
+    interface_name: velocity
     # command_interfaces:
     #   - position
     # state_interfaces:

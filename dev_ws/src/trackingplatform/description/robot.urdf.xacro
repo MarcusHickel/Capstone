@@ -56,7 +56,7 @@
         <parent link="base_link"/>
         <child link="azimuth_link"/>  
         <axis xyz="0 0 1"/>
-        <limit lower="0" upper="${2*pi}" velocity="100" effort="100"/>       
+        <limit lower="${-2*pi}" upper="${2*pi}" velocity="100" effort="100"/>       
     </joint>
 
     <link name="azimuth_link">
