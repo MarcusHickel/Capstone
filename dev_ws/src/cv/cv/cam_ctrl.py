@@ -37,8 +37,11 @@ class MinimalPublisher(Node):
         self.Az = 0
         self.Al = 0
 
-        self.AzAdj = 0.001 #Azimuth adjustment value (z axis) left right
-        self.AlAdj = 0.001 #Altitude adjustment value (y axis) up down
+        self.AzAdj = 0.1 #Azimuth adjustment value (z axis) left right
+        self.AlAdj = 0.1 #Altitude adjustment value (y axis) up down
+
+        self.Altemp = 0
+        self.Aztemp = 0
 
         #Define boundry 
         self.xlimit = float(5.0)
@@ -56,15 +59,19 @@ class MinimalPublisher(Node):
     
     #Searching for the rocket
     def timer_callback(self):
-        if self.lastRX + 1 < time.time():
-            self.get_logger().info('Last Received %ss ago searching...' %(time.time()-self.lastRX))
+        if self.lastRX + 10 < time.time():
+            self.get_logger().info('Last Received %ss ago return to origin' %(time.time()-self.lastRX))
             
             # self.Az = self.Az + 0.001
 
-            # msg = Float64MultiArray()
-            # msg.data = [float(self.Az), float(self.Al)] # Z(Azimuth) Y(Altitude)
-            # self.publisher.publish(msg)
-            # self.get_logger().info('Publishing: "%s"' % msg.data)
+            msg = Float64MultiArray()
+            msg.data = [float(0.0), float(0.0)] # Z(Azimuth) Y(Altitude)
+            self.publisher.publish(msg)
+            self.get_logger().info('Publishing: "%s"' % msg.data)
+        elif self.lastRX + 1 < time.time():
+            self.get_logger().info('Last Received %ss ago searching...' %(time.time()-self.lastRX))
+
+        
 
 
     
@@ -72,13 +79,16 @@ class MinimalPublisher(Node):
     def listener_callback(self, msg):
 
         #Pull Rocket postion
-        self.x = msg.x - 320.0
-        self.y = msg.y - 240.0
+        self.x = msg.x - 320.0 #X pos
+        self.y = msg.y - 240.0 #Y pos
 
+        self.Altemp = self.AlAdj*(self.y**2)*0.000017361 # Scale factor which is was found by getting finding where a parabola =1 at the edge of screen (480px)
+        self.Aztemp = self.AzAdj*(self.x**2)*0.000009766
 
-        #Is it +x or -x boundry
+        #Is it +x or -x boundry 
         if self.x > self.xlimit:
-            self.Az = self.Az - self.AzAdj
+             # Scale factor which is was found by getting finding where a parabola =1 at the edge of screen (640px)
+            self.Az = self.Az - self.Aztemp
             self.get_logger().info('x outside+"%s"' % self.x)
         elif self.x < -self.xlimit:
             self.Az = self.Az + self.AzAdj
@@ -90,15 +100,16 @@ class MinimalPublisher(Node):
 
         #Is it +y/-y boundry
         if self.y > self.ylimit:
-            self.Al = self.Al - self.AlAdj
+            self.Al = self.Al - self.Altemp
             self.get_logger().info('y outside+"%s"' % self.y)
         elif self.y < -self.ylimit:
-            self.Al = self.Al + self.AlAdj
+            self.Al = self.Al + self.Altemp
             self.get_logger().info('y outside-"%s"' % self.y)
         else:
             self.get_logger().info('y inside"%s"' % self.y)
 
-        if self.Al < 0:
+        if self.Al < 0: # To prevent camera going beyond limit
+            self.get_logger().info('position request out of range!')
             self.Al = 0
 
         # if self.Az < 0:
