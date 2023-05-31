@@ -38,10 +38,13 @@ class MinimalPublisher(Node):
         self.Al = 0
 
         self.AzAdj = 1 #Azimuth adjustment value (z axis) left right
-        self.AlAdj = 1 #Altitude adjustment value (y axis) up down
+        self.AlAdj = 4 #Altitude adjustment value (y axis) up down
 
         self.Altemp = 0
         self.Aztemp = 0
+
+        self.Aldiff = 0 #Change in velcoity
+        self.Azdiff = 0
 
         #Define boundry 
         self.xlimit = float(5.0)
@@ -59,17 +62,17 @@ class MinimalPublisher(Node):
     
     #Searching for the rocket
     def timer_callback(self):
-        if self.lastRX + 10 < time.time():
-            self.get_logger().info('Last Received %ss ago return to origin' %(time.time()-self.lastRX))
+        if self.lastRX + 5 < time.time():
+            self.get_logger().info('Last Received %gs ago return to origin' %(time.time()-self.lastRX))
             
             # self.Az = self.Az + 0.001
 
             msg = Float64MultiArray()
-            msg.data = [float(-1.0), float(-1.0)] # Z(Azimuth) Y(Altitude)
+            msg.data = [float(1.0), float(-1.0)] # Z(Azimuth) Y(Altitude)
             self.publisher.publish(msg)
             self.get_logger().info('Publishing: "%s"' % msg.data)
         elif self.lastRX + 1 < time.time():
-            self.get_logger().info('Last Received %ss ago searching...' %(time.time()-self.lastRX))
+            self.get_logger().info('Last Received %gs ago searching...' %(time.time()-self.lastRX))
 
         
 
@@ -85,27 +88,30 @@ class MinimalPublisher(Node):
         self.Altemp = self.AlAdj*(self.y**2)*0.000017361 # Scale factor which is was found by getting finding where a parabola =1 at the edge of screen (480px)
         self.Aztemp = self.AzAdj*(self.x**2)*0.000009766 # Scale factor which is was found by getting finding where a parabola =1 at the edge of screen (640px)
 
+        self.Aldiff = self.Al - self.Altemp
+        self.Azdiff = self.Az - self.Aztemp
+
         #Is it +x or -x boundry 
         if self.x > self.xlimit:
             self.Az = -self.Aztemp
-            self.get_logger().info('x outside+"%s"' % self.x)
+            self.get_logger().info('x +outside "%d" Velo Adjustment %f %f' % (self.x, self.Azdiff, self.Az))
         elif self.x < -self.xlimit:
-            self.Az = +self.AzAdj
-            self.get_logger().info('x outside-"%s"' % self.x)
+            self.Az = +self.Aztemp
+            self.get_logger().info('x -outside "%d" Velo Adjustment %f %f' % (self.x, self.Azdiff, self.Az))
         else:
-            self.get_logger().info('x inside"%s"' % self.x)
+            self.get_logger().info('x inside   "%d"' % self.x)
 
         
 
         #Is it +y/-y boundry
         if self.y > self.ylimit:
             self.Al = -self.Altemp
-            self.get_logger().info('y outside+"%s"' % self.y)
+            self.get_logger().info('y +outside "%d" Velo Adjustment %f %f' % (self.y, self.Aldiff, self.Al))
         elif self.y < -self.ylimit:
             self.Al =  +self.Altemp
-            self.get_logger().info('y outside-"%s"' % self.y)
+            self.get_logger().info('y -outside "%d" Velo Adjustment %f %f' % (self.y, self.Aldiff, self.Al))
         else:
-            self.get_logger().info('y inside"%s"' % self.y)
+            self.get_logger().info('y inside   "%d"' % self.y)
 
         # if self.Az < 0:
         #     self.Az = 0

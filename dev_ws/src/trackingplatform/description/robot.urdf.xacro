@@ -17,7 +17,7 @@
     <!-- A simple fixed joint from our empty world link, to our base. -->
     <!-- The base origin is offset from the world origin. -->
     <joint name="base_joint" type="fixed">
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 -10 0" rpy="0 0 0"/>
         <parent link="world"/>
         <child link="base_link"/>        
     </joint>
@@ -51,7 +51,7 @@
     </link>
 
 
-    <joint name="azimuth_joint" type="revolute">
+    <joint name="azimuth_joint" type="continuous">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <parent link="base_link"/>
         <child link="azimuth_link"/>  
@@ -85,12 +85,12 @@
     <!-- camera_joint describes where the camera is relative to the arm -->
     <!-- - Even though the camera isn't moving relative to the arm, it will probably be helpful to have its own link/frame rather than just adding more visuals to the arm -->
     <!-- - For this example, the camera_link origin will be at the centre of the camera's "sensor" -->
-    <joint name="camera_joint" type="revolute">
+    <joint name="altitude_joint" type="revolute">
         <origin xyz="0 0 1" rpy="0 0 0"/>
         <parent link="azimuth_link"/>
         <child link="camera_link"/>  
         <axis xyz="0 -1 0"/>
-        <limit lower="0" upper="${pi/2}" velocity="100" effort="100"/>       
+        <limit lower="0" upper="${pi}" velocity="100" effort="100"/>       
     </joint>
 
 

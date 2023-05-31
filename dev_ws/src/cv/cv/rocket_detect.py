@@ -33,20 +33,22 @@ class MinimalSubscriber(Node): #Change name of this class
         # Convert ROS Image message to OpenCV image
         current_frame = self.br.imgmsg_to_cv2(data)
 
-        hue_min = np.array([5, 50, 50],np.uint8)
-        hue_max = np.array([15, 255, 255],np.uint8)
+        hue_min = np.array([5, 20, 20],np.uint8)
+        hue_max = np.array([20, 255, 255],np.uint8)
 
         frame_threshed = cv2.inRange(current_frame, hue_min, hue_max)
+        masked = cv2.bitwise_and(current_frame,current_frame,mask=frame_threshed)
         # cv2.imwrite('output2.jpg', frame_threshed)
         frame_threshed = cv2.bitwise_not(frame_threshed)
         cv2.imshow("threshold", frame_threshed)
+        cv2.imshow("mask",masked)
 
         # Setup SimpleBlobDetector parameters.
         params = cv2.SimpleBlobDetector_Params()
 
         # Filter by Area.
         params.filterByArea = True
-        params.minArea = 5
+        params.minArea = 1
 
         # Filter by Circularity
         params.filterByCircularity = False
@@ -76,9 +78,9 @@ class MinimalSubscriber(Node): #Change name of this class
         # the size of the circle corresponds to the size of blob
 
         im_with_keypoints = cv2.drawKeypoints(current_frame, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-
+        
         # Show blobs
-        cv2.imshow("Detection", im_with_keypoints)
+        
         
         point_out = Point()
 
@@ -87,7 +89,7 @@ class MinimalSubscriber(Node): #Change name of this class
                     x = kp.pt[0]
                     y = kp.pt[1]
                     s = kp.size
-            
+                    im_with_keypoints = cv2.line(im_with_keypoints, (320, 240),(int(x), int(y)), (0, 255, 0), 1)
             if (s > point_out.z):                    
                                 point_out.x = x
                                 point_out.y = y
@@ -95,6 +97,9 @@ class MinimalSubscriber(Node): #Change name of this class
 
         if (point_out.z > 0):
             self.pub.publish(point_out) 
+
+        im_with_keypoints = cv2.rectangle(im_with_keypoints, (315, 235),(325, 245), (0, 255, 0), 1) #Box
+        cv2.imshow("Detection", im_with_keypoints)
 
         try:self.get_logger().info(f"Pt {i}: ({x},{y},{s})")
         except:self.get_logger().info('failed')

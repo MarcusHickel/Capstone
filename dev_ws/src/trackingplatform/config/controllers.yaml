@@ -21,7 +21,7 @@ forward_position_controller:
   ros__parameters:
     joints:
       - azimuth_joint
-      - camera_joint
+      - altitude_joint
     interface_name: velocity
     # command_interfaces:
     #   - position

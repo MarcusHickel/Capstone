@@ -28,6 +28,7 @@ Basic control provided by 'Cam_ctrl'. To make better by having it move faster th
 
 Also if rocket is detected in bottom half of screen the camera will move to that area but if rocket is moving up the camera is shoot right past it.
 
+When moving from left to right it perfroms fine, right to left however screws up. Might be a '-' somewhere
 ## Impletment blob find: 
 DONE! run:
 ```

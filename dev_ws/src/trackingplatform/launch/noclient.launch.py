@@ -35,7 +35,7 @@ def generate_launch_description():
         ),
 
         ExecuteProcess(
-            cmd=['gazebo', '-s', 'libgazebo_ros_factory.so',  '-s', 'libgazebo_ros_init.so', LaunchConfiguration('world')], # '--verbose'
+            cmd=['gzserver', '-s', 'libgazebo_ros_factory.so',  '-s', 'libgazebo_ros_init.so', LaunchConfiguration('world')], # '--verbose'
             output='screen'
         ),
 
