@@ -98,7 +98,7 @@ class MinimalSubscriber(Node): #Change name of this class
         if (point_out.z > 0):
             self.pub.publish(point_out) 
 
-        im_with_keypoints = cv2.rectangle(im_with_keypoints, (315, 235),(325, 245), (0, 255, 0), 1) #Box
+        im_with_keypoints = cv2.rectangle(im_with_keypoints, (240, 180),(400, 300), (0, 255, 0), 1) #Box
         cv2.imshow("Detection", im_with_keypoints)
 
         try:self.get_logger().info(f"Pt {i}: ({x},{y},{s})")

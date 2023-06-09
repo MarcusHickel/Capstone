@@ -37,7 +37,7 @@ class MinimalPublisher(Node):
         self.Az = 0
         self.Al = 0
 
-        self.AzAdj = 1 #Azimuth adjustment value (z axis) left right
+        self.AzAdj = 1 #Azimuth adjustment value (z axis) left right (Scales how velocity change)
         self.AlAdj = 4 #Altitude adjustment value (y axis) up down
 
         self.Altemp = 0

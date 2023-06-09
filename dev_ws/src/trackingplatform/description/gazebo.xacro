@@ -116,6 +116,37 @@
                 </noise> -->
             </camera>
             <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <imageTopicName>image_raw</imageTopicName>
+                <frame_name>camera_link_optical</frame_name>
+                <min_depth>0.1</min_depth>
+                <max_depth>500</max_depth>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+     <gazebo reference="camera_link">
+        <sensor type="camera" name="my_camera1">
+            <update_rate>60</update_rate>
+            <visualize>true</visualize>
+            <camera name="camera1">
+                <horizontal_fov>.05</horizontal_fov>
+                <image>
+                    <width>640</width>
+                    <height>480</height>
+                    <format>R8B8G8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+                <!-- <noise> This actually screws with the detection
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise> -->
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <imageTopicName>image_raw</imageTopicName>
                 <frame_name>camera_link_optical</frame_name>
                 <min_depth>0.1</min_depth>
                 <max_depth>500</max_depth>
