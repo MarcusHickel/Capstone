@@ -26,22 +26,8 @@ class MinimalSubscriber(Node): #Change name of this class
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()
 
-    def listener_callback(self, data):
-        # self.get_logger().info('I hear %s"' % msg.data)
-        # self.get_logger().info('Receiving video frame')
-    
-        # Convert ROS Image message to OpenCV image
-        current_frame = self.br.imgmsg_to_cv2(data)
-
-        hue_min = np.array([5, 20, 20],np.uint8)
-        hue_max = np.array([20, 255, 255],np.uint8)
-
-        frame_threshed = cv2.inRange(current_frame, hue_min, hue_max)
-        masked = cv2.bitwise_and(current_frame,current_frame,mask=frame_threshed)
-        # cv2.imwrite('output2.jpg', frame_threshed)
-        frame_threshed = cv2.bitwise_not(frame_threshed)
-        cv2.imshow("threshold", frame_threshed)
-        cv2.imshow("mask",masked)
+        self.hue_min = np.array([5, 20, 20],np.uint8)
+        self.hue_max = np.array([20, 255, 255],np.uint8)
 
         # Setup SimpleBlobDetector parameters.
         params = cv2.SimpleBlobDetector_Params()
@@ -65,22 +51,32 @@ class MinimalSubscriber(Node): #Change name of this class
         # Create a detector with the parameters
         ver = (cv2.__version__).split('.')
         if int(ver[0]) < 3 :
-            detector = cv2.SimpleBlobDetector(params)
+            self.detector = cv2.SimpleBlobDetector(params)
         else : 
-            detector = cv2.SimpleBlobDetector_create(params)
+            self.detector = cv2.SimpleBlobDetector_create(params)
 
+    def listener_callback(self, data):
+        # self.get_logger().info('I hear %s"' % msg.data)
+        # self.get_logger().info('Receiving video frame')
+    
+        # Convert ROS Image message to OpenCV image
+        current_frame = self.br.imgmsg_to_cv2(data)
+
+        frame_threshed = cv2.inRange(current_frame, self.hue_min, self.hue_max)
+        masked = cv2.bitwise_and(current_frame,current_frame,mask=frame_threshed)
+        # cv2.imwrite('output2.jpg', frame_threshed)
+        frame_threshed = cv2.bitwise_not(frame_threshed)
+        cv2.imshow("threshold", frame_threshed)
+        cv2.imshow("mask",masked)
 
         # Detect blobs.
-        keypoints = detector.detect(frame_threshed)
+        keypoints = self.detector.detect(frame_threshed)
 
         # Draw detected blobs as red circles.
         # cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS ensures
         # the size of the circle corresponds to the size of blob
 
         im_with_keypoints = cv2.drawKeypoints(current_frame, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-        
-        # Show blobs
-        
         
         point_out = Point()
 
@@ -98,7 +94,7 @@ class MinimalSubscriber(Node): #Change name of this class
         if (point_out.z > 0):
             self.pub.publish(point_out) 
 
-        im_with_keypoints = cv2.rectangle(im_with_keypoints, (240, 180),(400, 300), (0, 255, 0), 1) #Box
+        im_with_keypoints = cv2.rectangle(im_with_keypoints, (240, 180),(400, 300), (0, 255, 0), 1) #Box for 2nd camera
         cv2.imshow("Detection", im_with_keypoints)
 
         try:self.get_logger().info(f"Pt {i}: ({x},{y},{s})")

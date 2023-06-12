@@ -37,7 +37,7 @@ class MinimalPublisher(Node):
         self.Az = 0
         self.Al = 0
 
-        self.AzAdj = 1 #Azimuth adjustment value (z axis) left right (Scales how velocity change)
+        self.AzAdj = 1.2 #Azimuth adjustment value (z axis) left right (Scales how velocity change)
         self.AlAdj = 4 #Altitude adjustment value (y axis) up down
 
         self.Altemp = 0
@@ -73,6 +73,7 @@ class MinimalPublisher(Node):
             self.get_logger().info('Publishing: "%s"' % msg.data)
         elif self.lastRX + 1 < time.time():
             self.get_logger().info('Last Received %gs ago searching...' %(time.time()-self.lastRX))
+            
 
         
 
